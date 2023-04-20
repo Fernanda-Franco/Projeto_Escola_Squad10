@@ -7,21 +7,25 @@ const morgan = require("morgan");
 
 // Configuração DB
 authenticate(connection);
-const {Turma} = require("./database/turma")
-const {Aluno} = require("./database/aluno")
-const {Professor} = require("./database/professor");
+
+const swaggerUi = require("swagger-ui-express");
 
 // Configuração do app
 const app = express();
 app.use(express.json());
 
+const swaggerJson = require("./swagger.json");
 const rotaAlunos = require("./routes/alunos");
 const rotaTurmas = require("./routes/turmas");
 const rotaProfessores = require("./routes/professores");
+
 //Rotas
 app.use(rotaAlunos);
 app.use(rotaTurmas);
 app.use(rotaProfessores);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJson));
+
+
 
 
 app.listen(3000, () =>{
